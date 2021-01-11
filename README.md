@@ -26,4 +26,5 @@ Join me in advancing Computer Vision and Artificial Intelligence for autonomous 
 
 To follow and connect with me check this page:
 
-	http://slides.com/mslavescu/self-driving-cars#/22
+	- http://slides.com/mslavescu/self-driving-cars#/22
+
