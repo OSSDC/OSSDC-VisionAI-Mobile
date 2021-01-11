@@ -1,6 +1,6 @@
 # OSSDC VisionAI Mobile - Android
 
-Companion Android application for https://github.com/OSSDC/OSSDC-VisionAI-Core project.
+**Companion Android application for https://github.com/OSSDC/OSSDC-VisionAI-Core project**
 
 This project has support for https://Race.OSSDC.org WebRTC based platform, to allow for extensive and quick testing of computer vision and neural nets algorithms.
 
