@@ -1,14 +1,16 @@
 ### OSSDC VisionAI Mobile - Android
 
 This project has support for Race.OSSDC.org WebRTC based platform, to allow for extensive and quick testing of computer vision and neural nets algorithms.
-It enables easy manual or automated remote control of robots, while supporting two way audio/video/data communication.
+It also enables easy manual or automated remote control of robots, while supporting two way audio/video/data communication.
 
 Demo videos with OSSDC VisionAI Core based processing on remote machine:
 
-	- Mono depth over WebRTC using Race.OSSDC.org platform
+- Mono depth over WebRTC using Race.OSSDC.org platform
+
 	https://www.youtube.com/watch?v=6a6bqJiZuaM
 
-	- OSSDC VisionAI MiDaS Mono Depth - night demo
+- OSSDC VisionAI MiDaS Mono Depth - night demo
+
 	https://www.youtube.com/watch?v=T0ZnW1crm7M
 
 See more examples on how to use it in https://github.com/OSSDC/OSSDC-VisionAI-Core project.
