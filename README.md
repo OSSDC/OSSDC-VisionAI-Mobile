@@ -25,6 +25,5 @@ The app can control (over USB) OpenBot, Neato an SPARK Assistant based robots. D
 Join me in advancing Computer Vision and Artificial Intelligence for autonomous robots at: http://ossdc.org
 
 To follow and connect with me check this page:
-
-	- http://slides.com/mslavescu/self-driving-cars#/22
+- http://slides.com/mslavescu/self-driving-cars#/22
 
