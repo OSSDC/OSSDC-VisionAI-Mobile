@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">OSSDC VisionAI Mobile</string>
+    <string name="title_activity_launch">OSSDC VisionAI</string>
+    <string name="title_activity_race_ossdc">OSSDC VisionAI Demo</string>
+    <string name="title_start_race_ossdc">Connect</string>
+</resources>
