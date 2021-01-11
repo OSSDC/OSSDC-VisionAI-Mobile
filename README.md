@@ -1,4 +1,4 @@
-### OSSDC VisionAI Mobile - Android
+# OSSDC VisionAI Mobile - Android
 
 Companion Android application for https://github.com/OSSDC/OSSDC-VisionAI-Core project.
 
@@ -8,15 +8,15 @@ It also enables easy manual or automated remote control of robots, while support
 
 It can be used to build telepresence robots.
 
-Demo videos with OSSDC VisionAI Core based processing on remote machine:
+## Demo videos with OSSDC VisionAI Core based processing on remote machine
 
-	Mono depth over WebRTC using Race.OSSDC.org platform
+- Mono depth over WebRTC using Race.OSSDC.org platform
 
-	https://www.youtube.com/watch?v=6a6bqJiZuaM
+	- https://www.youtube.com/watch?v=6a6bqJiZuaM
 
-	OSSDC VisionAI MiDaS Mono Depth - night demo
+- OSSDC VisionAI MiDaS Mono Depth - night demo
 
-	https://www.youtube.com/watch?v=T0ZnW1crm7M
+	- https://www.youtube.com/watch?v=T0ZnW1crm7M
 
 See more examples on how to use it in https://github.com/OSSDC/OSSDC-VisionAI-Core project.
 
