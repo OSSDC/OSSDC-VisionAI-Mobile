@@ -10,11 +10,11 @@ It can be used to build telepresence robots.
 
 Demo videos with OSSDC VisionAI Core based processing on remote machine:
 
-	- Mono depth over WebRTC using Race.OSSDC.org platform
+	Mono depth over WebRTC using Race.OSSDC.org platform
 
 	https://www.youtube.com/watch?v=6a6bqJiZuaM
 
-	- OSSDC VisionAI MiDaS Mono Depth - night demo
+	OSSDC VisionAI MiDaS Mono Depth - night demo
 
 	https://www.youtube.com/watch?v=T0ZnW1crm7M
 
