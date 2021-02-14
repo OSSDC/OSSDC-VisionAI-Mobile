@@ -15,10 +15,15 @@
  */
 package org.ossdc.visionai;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -36,6 +41,9 @@ import java.util.Arrays;
 
 public class LauncherActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    private static final int ROOM_NAME_FROM_QR_CODE = 1;
+    public static final String QRCODE_RESULT = "QRCODE_RESULT";
+
     SharedPreferences sp;
 
     private String roomName;
@@ -45,6 +53,7 @@ public class LauncherActivity extends AppCompatActivity implements AdapterView.O
     boolean hideLocalCamera  = true;
     private String robotMode = "OpenBot";
     String[] ROBOT_MODES = { "OpenBot", "Neato", "SPARK Assistant"};
+    private String resFPS;
 
     private static final String CHAR_LIST =
             "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -85,6 +94,7 @@ public class LauncherActivity extends AppCompatActivity implements AdapterView.O
             useDisplayArea = savedInstanceState.getBoolean("useDisplayArea",false);
             hideLocalCamera = savedInstanceState.getBoolean("hideLocalCamera",false);
             robotMode = savedInstanceState.getString("robotMode","OpenBot");
+            resFPS = savedInstanceState.getString("resFPS","2560,1440,30");
         }
         else
         {
@@ -94,6 +104,7 @@ public class LauncherActivity extends AppCompatActivity implements AdapterView.O
             useDisplayArea = sp.getBoolean("useDisplayArea",false);
             hideLocalCamera = sp.getBoolean("hideLocalCamera",false);
             robotMode = sp.getString("robotMode","OpenBot");
+            resFPS = sp.getString("resFPS","2560,1440,30");
         }
 
         EditText roomNameField = findViewById(R.id.editTextTextPersonName);
@@ -102,6 +113,7 @@ public class LauncherActivity extends AppCompatActivity implements AdapterView.O
         Switch displayAreaSwitchField = findViewById(R.id.displayAreaSwitch);
         Switch hideLocalCameraSwitchField = findViewById(R.id.hideLocalCameraSwitch);
         Spinner robotModeField = findViewById(R.id.robotMode);
+        EditText resFPSField = findViewById(R.id.editTextResFPS);
 
         backCameraSwitchField.setChecked(useBackCamera);
         roomNameField.setText(roomName);
@@ -109,6 +121,9 @@ public class LauncherActivity extends AppCompatActivity implements AdapterView.O
         displayAreaSwitchField.setChecked(useDisplayArea);
         hideLocalCameraSwitchField.setChecked(hideLocalCamera);
         robotModeField.setSelection(Arrays.asList(ROBOT_MODES).indexOf(robotMode));
+        resFPSField.setText(resFPS);
+
+
     }
 
     @Override
@@ -120,6 +135,56 @@ public class LauncherActivity extends AppCompatActivity implements AdapterView.O
         // TODO - Custom Code
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (ROOM_NAME_FROM_QR_CODE) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    roomName = data.getStringExtra(QRCODE_RESULT);
+
+                    EditText roomNameField = findViewById(R.id.editTextTextPersonName);
+                    roomNameField.setText(roomName);
+                }
+                break;
+            }
+        }
+    }
+
+    public void scanRoomQRCode(View view) {
+            launchActivity(QRCodeScanningActivity.class);
+    }
+
+    public void launchActivity(Class<?> clss) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            mClss = clss;
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA}, ZBAR_CAMERA_PERMISSION);
+        } else {
+            Intent intent = new Intent(this,clss);
+            startActivityForResult(intent, ROOM_NAME_FROM_QR_CODE);
+
+        }
+    }
+    private static final int ZBAR_CAMERA_PERMISSION = 1;
+    private Class<?> mClss;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,  String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case ZBAR_CAMERA_PERMISSION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if(mClss != null) {
+                        Intent intent = new Intent(this, mClss);
+                        startActivity(intent);
+                    }
+                } else {
+                    Toast.makeText(this, "Please grant camera permission to use the QR Scanner", Toast.LENGTH_SHORT).show();
+                }
+                return;
+        }
+    }
     public void openRaceOSSDCActivity(View view) {
         EditText roomNameField = findViewById(R.id.editTextTextPersonName);
         EditText roomPasswordField = findViewById(R.id.editTextTextPassword);
@@ -127,6 +192,7 @@ public class LauncherActivity extends AppCompatActivity implements AdapterView.O
         Switch displayAreaSwitchField = findViewById(R.id.displayAreaSwitch);
         Switch hideLocalCameraSwitchField = findViewById(R.id.hideLocalCameraSwitch);
         Spinner robotModeField = findViewById(R.id.robotMode);
+        EditText resFPSField = findViewById(R.id.editTextResFPS);
 
         useBackCamera = backCameraSwitchField.isChecked();
         roomName = roomNameField.getText().toString();
@@ -134,6 +200,7 @@ public class LauncherActivity extends AppCompatActivity implements AdapterView.O
         useDisplayArea = displayAreaSwitchField.isChecked();
         hideLocalCamera = hideLocalCameraSwitchField.isChecked();
         robotMode = ROBOT_MODES[robotModeField.getSelectedItemPosition()];
+        resFPS = resFPSField.getText().toString();
 
         Intent intent = new Intent(this, RaceOSSDCActivity.class);
         intent.putExtra("roomName", roomName);
@@ -142,6 +209,7 @@ public class LauncherActivity extends AppCompatActivity implements AdapterView.O
         intent.putExtra("useDisplayArea", useDisplayArea);
         intent.putExtra("hideLocalCamera", hideLocalCamera);
         intent.putExtra("robotMode", robotMode);
+        intent.putExtra("resFPS", resFPS);
 
         sp=getSharedPreferences("SD", Context.MODE_PRIVATE);
         SharedPreferences.Editor ed=sp.edit();
@@ -151,6 +219,7 @@ public class LauncherActivity extends AppCompatActivity implements AdapterView.O
         ed.putBoolean("useDisplayArea",useDisplayArea);
         ed.putBoolean("hideLocalCamera",hideLocalCamera);
         ed.putString("robotMode",robotMode);
+        ed.putString("resFPS",resFPS);
 
         ed.commit();
 
@@ -166,6 +235,7 @@ public class LauncherActivity extends AppCompatActivity implements AdapterView.O
         savedInstanceState.putBoolean("useDisplayArea", useDisplayArea);
         savedInstanceState.putBoolean("hideLocalCamera", hideLocalCamera);
         savedInstanceState.putString("robotMode", robotMode);
+        savedInstanceState.putString("resFPS", resFPS);
     }
 
     @Override
@@ -177,5 +247,6 @@ public class LauncherActivity extends AppCompatActivity implements AdapterView.O
         useDisplayArea = savedInstanceState.getBoolean("useDisplayArea");
         hideLocalCamera = savedInstanceState.getBoolean("hideLocalCamera");
         robotMode = savedInstanceState.getString("robotMode");
+        resFPS = savedInstanceState.getString("resFPS");
     }
 }

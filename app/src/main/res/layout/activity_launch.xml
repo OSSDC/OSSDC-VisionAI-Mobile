@@ -18,58 +18,72 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <Spinner
-            android:id="@+id/robotMode"
-            android:layout_width="221dp"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown"
-            />
-        <Switch
-            android:id="@+id/backCameraSwitch"
-            android:layout_width="219dp"
-            android:layout_height="wrap_content"
-            android:text="Back camera" />
-        <Switch
-            android:id="@+id/displayAreaSwitch"
-            android:layout_width="219dp"
-            android:layout_height="wrap_content"
-            android:text="Show USB send/receive data" />
-        <Switch
-            android:id="@+id/hideLocalCameraSwitch"
-            android:layout_width="219dp"
-            android:layout_height="wrap_content"
-            android:text="Hide local camera" />
-
-        <EditText
-            android:id="@+id/editTextTextPersonName"
-            android:layout_width="288dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            />
-
-        <EditText
-            android:id="@+id/editTextTextPassword"
-            android:layout_width="290dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
-            />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:onClick="openRaceOSSDCActivity"
-            android:text="@string/title_start_race_ossdc" />
-    </LinearLayout>
-
+<!--    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:gravity="center"-->
+<!--        android:isScrollContainer="true">-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <Spinner
+                android:id="@+id/robotMode"
+                android:layout_width="221dp"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown"
+                />
+            <Switch
+                android:id="@+id/backCameraSwitch"
+                android:layout_width="219dp"
+                android:layout_height="wrap_content"
+                android:text="Back camera" />
+            <Switch
+                android:id="@+id/displayAreaSwitch"
+                android:layout_width="219dp"
+                android:layout_height="wrap_content"
+                android:text="Show USB send/receive data" />
+            <Switch
+                android:id="@+id/hideLocalCameraSwitch"
+                android:layout_width="219dp"
+                android:layout_height="wrap_content"
+                android:text="Hide local camera" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:onClick="openRaceOSSDCActivity"
+                android:text="@string/title_start_race_ossdc" />
+            <EditText
+                android:id="@+id/editTextTextPersonName"
+                android:layout_width="288dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                />
+            <EditText
+                android:id="@+id/editTextTextPassword"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPassword"
+                />
+            <EditText
+                android:id="@+id/editTextResFPS"
+                android:layout_width="288dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:onClick="scanRoomQRCode"
+                android:text="@string/title_scan_room_qr_code" />
+        </LinearLayout>
+<!--    </ScrollView>-->
 </android.support.design.widget.CoordinatorLayout>

@@ -33,6 +33,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
@@ -77,11 +78,7 @@ import io.socket.client.Socket;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-import static org.ossdc.visionai.webrtc.MediaStreamActivity.FPS;
-import static org.ossdc.visionai.webrtc.MediaStreamActivity.VIDEO_RESOLUTION_HEIGHT;
-import static org.ossdc.visionai.webrtc.MediaStreamActivity.VIDEO_RESOLUTION_WIDTH;
-import static org.ossdc.visionai.webrtc.MediaStreamActivity.VIDEO_TRACK_ID;
-import static org.ossdc.visionai.webrtc.MediaStreamActivity.AUDIO_TRACK_ID;
+
 
 import static io.socket.client.Socket.EVENT_CONNECT;
 import static io.socket.client.Socket.EVENT_DISCONNECT;
@@ -90,6 +87,11 @@ import static org.webrtc.SessionDescription.Type.OFFER;
 
 public class RaceOSSDCActivity extends AppCompatActivity {
     private static final String TAG = "OSSDCVisionAI";
+    public static int VIDEO_RESOLUTION_WIDTH = 1280*2;
+    public static int VIDEO_RESOLUTION_HEIGHT = 720*2;
+    public static final String VIDEO_TRACK_ID = "ARDAMSv0";
+    public static final String AUDIO_TRACK_ID = "ARDAMSa0";
+    public static int FPS = 30;
 
     private static final int RC_CALL = 111;
 
@@ -116,6 +118,8 @@ public class RaceOSSDCActivity extends AppCompatActivity {
 
     String robotMode = "OpenBot";
     private VideoCapturer videoCapturer = null;
+
+    String resFPS = "1280,720,30";//default 720p 30fps
 
     /*
      * This handler will be passed to UsbService. Data received from serial port is displayed through this handler
@@ -220,6 +224,33 @@ public class RaceOSSDCActivity extends AppCompatActivity {
         roomPassword = intent.getStringExtra("roomPassword");
         useBackCamera = intent.getBooleanExtra("useBackCamera",false);
         robotMode = intent.getStringExtra("robotMode");
+        resFPS = intent.getStringExtra("resFPS");
+
+        int orientation = getResources().getConfiguration().orientation;
+        try {
+            String[] v = resFPS.split(",");
+//            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                VIDEO_RESOLUTION_WIDTH = Integer.parseInt(v[0]);
+                VIDEO_RESOLUTION_HEIGHT = Integer.parseInt(v[1]);
+//            }
+//            else {
+//                //reverse
+//                VIDEO_RESOLUTION_HEIGHT = Integer.parseInt(v[0]);
+//                VIDEO_RESOLUTION_WIDTH = Integer.parseInt(v[1]);
+//            }
+            FPS = Integer.parseInt(v[2]);
+        } catch (Exception e){
+            //counter intuitive as it is reversed, but this is the fastest on MiDaS and other algorithms
+//            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                VIDEO_RESOLUTION_WIDTH = 2560;
+                VIDEO_RESOLUTION_HEIGHT = 1440;
+//            }
+//            else {
+//                VIDEO_RESOLUTION_HEIGHT = 2560;
+//                VIDEO_RESOLUTION_WIDTH = 1440;
+//            }
+            FPS = 30;
+        }
 
         SurfaceView surfaceView = findViewById(R.id.surface_view);
         TextView fromCamera = findViewById(R.id.fromCamera);
@@ -340,12 +371,12 @@ public class RaceOSSDCActivity extends AppCompatActivity {
             initializeSurfaceViews();
 
             initializePeerConnectionFactory();
-
-            createVideoTrackFromCameraAndShowIt();
-
             initializePeerConnections();
 
-            startStreamingVideo();
+            if(FPS>0) {
+                createVideoTrackFromCameraAndShowIt();
+                startStreamingVideo();
+            }
         } else {
             EasyPermissions.requestPermissions(this, "Need some permissions", RC_CALL, perms);
         }
@@ -522,6 +553,25 @@ public class RaceOSSDCActivity extends AppCompatActivity {
                                 e1.printStackTrace();
                             }
                         }
+                        else
+                            //{"direct":"any data in base64, as it will be passed through to USB as binary"}
+                            if(message.has("direct"))
+                            {
+                                try {
+                                    String directData = message.getString("direct");
+                                    if (usbService != null) { // if UsbService was correctly binded, Send data
+
+                                        Log.d(TAG, "USB-Send: "+directData);
+                                        if(directData!=null) {
+                                            byte[] decodedBytes = Base64.decode(directData,0);
+                                            usbService.write(decodedBytes);//send raw
+                                        }
+                                    }
+                                } catch (JSONException e1) {
+                                    e1.printStackTrace();
+                                }
+
+                            }
                         else
                         //{"setmotor":[10,10,50,1605574844705]}
                         if(message.has("setmotor"))

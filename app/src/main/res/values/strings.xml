@@ -4,4 +4,6 @@
     <string name="title_activity_launch">OSSDC VisionAI</string>
     <string name="title_activity_race_ossdc">OSSDC VisionAI Demo</string>
     <string name="title_start_race_ossdc">Connect</string>
+    <string name="title_scan_room_qr_code">Scan Room QR Code</string>
+    <string name="qr_code_scanner_activity">QR Code Scanning</string>
 </resources>
